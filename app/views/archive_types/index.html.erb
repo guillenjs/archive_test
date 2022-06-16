@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Archive types</h1>
+
+<div id="archive_types">
+  <% @archive_types.each do |archive_type| %>
+    <%= render archive_type %>
+    <p>
+      <%= link_to "Show this archive type", archive_type %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New archive type", new_archive_type_path %>

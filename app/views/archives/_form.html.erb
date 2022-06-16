@@ -1,0 +1,100 @@
+
+
+<%= form_with(model: archive) do |form| %>
+  <% if archive.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(archive.errors.count, "error") %> prohibited this archive from being saved:</h2>
+
+      <ul>
+        <% archive.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, style: "display: block" %>
+    <%= form.text_field :title %>
+  </div>
+
+  <!---Group data can be static because we know what it should be-->
+  <select name="group" id="group" onchange="SelectSelection(this)">
+    <option value="">--Please choose an option--</option>
+    <option value="1">Paper</option>
+    <option value="2">Photos</option>
+    <option value="3">References</option>
+    <option value="4">Other Collections</option>
+  </select><br>
+
+  <!---Category can be dynamically create with jquery script below-->
+  <select name="category" id="category" onchange="SelectSelection(this)">
+    <option value="">--Please choose an option--</option>
+  </select><br>
+
+  <!---Subcategory data can be dynamically create with jquery script below we will use
+      form.select helper in order to submite it as the archive id.
+  -->
+  <%= form.select :archive_type_id, options_for_select(["Select One", ""]), :onchange => 'SetFormType(this)'  %>
+
+
+<!---Fields for JSON data-->
+  <div class="extra_fields" id="extra_fields">
+    <%= form.fields :archive_data do |field| %>
+      <div>
+        <%= field.label "Value 1:" %>
+        <%= field.text_field :value_1%>
+      </div>
+            <div>
+        <%= field.label "Value 2:" %>
+        <%= field.text_field :value_2%>
+      </div>
+            <div>
+        <%= field.label "Value 3:" %>
+        <%= field.text_field :value_3%>
+      </div>
+  <% end %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
+
+<script>
+
+      function SelectSelection(e) {
+          console.log(e.name)
+          $.get("http://localhost:3000/subcategories",
+            {
+              id: e.value ,
+            },
+            function(data, status){
+              var category_type = e.name == "group"? '#category': '#archive_archive_type_id'
+              $(category_type).empty()
+              data.forEach(function(subcategory){
+                $(category_type).append('<option value="' + subcategory["id"] + '">' + subcategory["archive_type"]+ '</option>');
+               }
+              ) 
+            });
+      }
+
+        function SetFormType() {
+          //var value = $('#group').val()
+          console.log(value)
+
+            if (value == 1){
+              $("#extra_fields").html("<%= j render :partial => 'archives/partials/paper_form' %>");
+              }
+            else if (value == 2){
+              $("#extra_fields").html("<%= j render :partial => 'archives/partials/photo_form' %>");
+              }
+         }
+        
+        $( "#archive_archive_type_id" ).change(function() {
+            console.log('this would change the partials for form')
+        });//
+
+
+</script>
+

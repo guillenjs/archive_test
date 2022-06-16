@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @archive_type %>
+
+<div>
+  <%= link_to "Edit this archive type", edit_archive_type_path(@archive_type) %> |
+  <%= link_to "Back to archive types", archive_types_path %>
+
+  <%= button_to "Destroy this archive type", @archive_type, method: :delete %>
+</div>

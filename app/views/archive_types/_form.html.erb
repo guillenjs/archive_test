@@ -1,0 +1,30 @@
+<%= form_with(model: archive_type) do |form| %>
+  <% if archive_type.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(archive_type.errors.count, "error") %> prohibited this archive_type from being saved:</h2>
+
+      <ul>
+        <% archive_type.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+
+
+
+  <div>
+    <%= form.label :archive_type, style: "display: block" %>
+    <%= form.text_field :archive_type %>
+  </div>
+
+  <div>
+    <%= form.label :ancestry, style: "display: block" %>
+    <%= form.text_field :ancestry %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
